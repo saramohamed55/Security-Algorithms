@@ -33,12 +33,12 @@ namespace SecurityLibrary
             if (plainText.Length % 2 != 0) plainText += 'x';
             ///////////initialize key
             HashSet<char> Table = new HashSet<char>();
-            string alpha= "abcdefghjklmnopqrstuvwxyz";//put j instead of i
+            string alpha= "abcdefghiklmnopqrstuvwxyz";//put i instead of j
             for(int i = 0; i < key.Length; i++)
             {
-                if (key[i] == 'i')
+                if (key[i] == 'j')
                 {
-                    Table.Add('j');
+                    Table.Add('i');
                 }
                 else
                 {
@@ -56,27 +56,29 @@ namespace SecurityLibrary
             //matrics 5x5 with alphabet
             m = MakeMatrics(Table);
             string ans = "";
-            for(int i = 0; i < plainText.Length; i += 2)
-            {//same row
-                if (m.litters[plainText[i]].Item1 == m.litters[plainText[i + 1]].Item1)
-                {
-                    ans += m.row[m.litters[plainText[i]].Item1][(m.litters[plainText[i]].Item2 + 1) % 5];
-                    ans += m.row[m.litters[plainText[i + 1]].Item1 + 1][(m.litters[plainText[i + 1]].Item2 + 1) % 5];
-
-                }
+            for(int i = 0; i < plainText.Length-1; i += 2)
+            {
+                
                 //same colm 
-                else if (m.litters[plainText[i]].Item2==m.litters[plainText[i+1]].Item2)
+                 if (m.litters[plainText[i]].Item2==m.litters[plainText[i+1]].Item2)
                 {
                     ans += m.row[(m.litters[plainText[i]].Item1 + 1) % 5][m.litters[plainText[i]].Item2];
                     ans += m.row[(m.litters[plainText[i+1]].Item1 + 1) % 5][m.litters[plainText[i+1]].Item2];
+
+                }
+                //same row
+                else if (m.litters[plainText[i]].Item1 == m.litters[plainText[i + 1]].Item1)
+                {
+                    ans += m.row[m.litters[plainText[i]].Item1][(m.litters[plainText[i]].Item2 + 1) % 5];
+                    ans += m.row[m.litters[plainText[i + 1]].Item1][(m.litters[plainText[i + 1]].Item2 + 1) % 5];
 
                 }
 
                 //else
                 else
                 {
-                    ans += m.row[m.litters[plainText[i]].Item1][m.litters[plainText[i]].Item2 ];
-                    ans += m.row[m.litters[plainText[i + 1]].Item1 ][m.litters[plainText[i + 1]].Item2 ];
+                    ans += m.row[m.litters[plainText[i]].Item1][m.litters[plainText[i+1]].Item2 ];
+                    ans += m.row[m.litters[plainText[i + 1]].Item1 ][m.litters[plainText[i ]].Item2 ];
 
 
                 }
