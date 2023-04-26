@@ -36,13 +36,7 @@ namespace SecurityLibrary.ElGamal
             int ans = (int)((long)c2 * invK % q);
             return ans;
         }
-        private int invMod(int A, int M)
-        {
-            for (int i = 1; i < M; i++)
-                if (((A % M) * (i % M)) % M == 1)
-                    return i;
-            return 1;
-        }
+       
         public int GetMultiplicativeInverse(int number, int baseN)
         {
             List<int> q = new List<int>();
