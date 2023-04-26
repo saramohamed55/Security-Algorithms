@@ -18,7 +18,7 @@ namespace SecurityLibrary.ElGamal
         /// <returns>list[0] = C1, List[1] = C2</returns>
         public List<long> Encrypt(int q, int alpha, int y, int k, int m)
         {
-            
+            if (q == 1) return null;
             long c1 =(long) Getres(alpha, k, q);
             int K = Getres(y, k, q);
             long c2 = (long)Getres(K * m, 1, q);
@@ -28,7 +28,7 @@ namespace SecurityLibrary.ElGamal
             return ans;
         }
         public int Decrypt(int c1, int c2, int x, int q)
-        { 
+        { if (q == 1) return 0;
             int K = Getres(c1, x, q);
             //to get inverse K
            
@@ -36,13 +36,7 @@ namespace SecurityLibrary.ElGamal
             int ans = (int)((long)c2 * invK % q);
             return ans;
         }
-        private int invMod(int A, int M)
-        {
-            for (int i = 1; i < M; i++)
-                if (((A % M) * (i % M)) % M == 1)
-                    return i;
-            return 1;
-        }
+        
         public int GetMultiplicativeInverse(int number, int baseN)
         {
             List<int> q = new List<int>();
@@ -99,14 +93,24 @@ namespace SecurityLibrary.ElGamal
 
         }
         public int Getres(int a, int b, int c)
-        {
-            int res = 1;
-            for (int i = 0; i < b; i++)
+        {   if (c == 1) return 0;
+            if (b < 0)
             {
-                res *= a;
-                res %= c;
+                b = 1 / b;
+                b = -b;
             }
-            return res;
+            int res = 1;
+            a %= c;
+            int count = 0;
+          
+            while (count < b) {
+                    res = res * a;
+                    res %= c;
+                    count++;
+               }
+            
+            
+            return res % c;
         }
 
 

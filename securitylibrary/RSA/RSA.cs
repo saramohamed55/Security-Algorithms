@@ -12,18 +12,30 @@ namespace SecurityLibrary.RSA
         {
             
             int n = p * q;
-           // int ans = (int)((Math.Pow(M, e))%n);
-            int ans = 1;
-           for (int i = 0; i < e; i++)
+            // int ans = (int)((Math.Pow(M, e))%n);
+           
+            if (e< 0)
             {
-                ans = ans * M  ;
-                ans = ans % n;
+                e = 1 / e;
+                e= -e;
             }
+            int ans = 1;
+            M %= n;
+            int count = 0;
+            while (count < e&&n!=1)
+            {
+                ans *= M;
+                ans %= n;
+                count++;
+
+            }
+            if (n == 1) ans = 0;
+           
             return ans;
         }
 
         public int Decrypt(int p, int q, int C, int e)
-        {
+        {   
             int n = p * q;
             //d= 1/e mod n
             int phi = (p - 1) * (q - 1);
@@ -31,11 +43,20 @@ namespace SecurityLibrary.RSA
             int d = GetMultiplicativeInverse(e, phi);
            
             int ans = 1;
-            for (int i = 0; i < d; i++)
+            if (d < 0)
             {
-                ans = (ans * C) % n;
-
+                d = 1 / d;
+                d = -d;
             }
+            C = C % n;
+            int count = 0;
+            while (count < d&&n!=1)
+            {
+                ans *= C;
+                ans %= n;
+                count++;
+            }
+            if (n == 1) ans = 0;
             return ans;
 
         }
